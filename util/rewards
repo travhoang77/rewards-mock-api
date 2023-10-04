@@ -1,0 +1,17 @@
+function calculateRewardPoints(transactionAmount) {
+    let rewardPoints = 0;
+    transactionAmount = Math.floor(transactionAmount)
+
+    if (transactionAmount >= 50 && transactionAmount <= 100) {
+      // 1 reward point for every $50 to $100
+      rewardPoints = transactionAmount - 50;
+    } else if (transactionAmount > 100) {
+      // 1 reward point for every $50 to $100
+      rewardPoints = 50; 
+      // 2 reward points for every dollar above $100
+      rewardPoints += (transactionAmount - 100) * 2;
+    }
+    return rewardPoints;
+  }
+  
+  module.exports = { calculateRewardPoints };
