@@ -1,10 +1,11 @@
 const express = require('express');
+const cors = require("cors")
 const { calculateRewardPoints } = require('./util/rewards')
 const app = express();
-const port = 3000;
+const port = 5000;
 
 // Middleware to parse JSON request bodies
-app.use(express.json());
+app.use(cors(),express.json());
 
 // Customer class definition (imported from customer.js)
 const Customer = require('./models/customer');
@@ -33,10 +34,16 @@ const mockTransactions = [];
 const startDate = new Date('2022-10-01');
 const endDate = new Date('2022-12-31');
 
+
 for (const customer of customers) {
-  for (let i = 0; i < 20; i++) {
+const min1 = 1;        
+const max1 = 200;    
+const numberOfTransactions = Math.floor(Math.random() * (max1 - min1 + 1)) + min1;
+  for (let i = 0; i < numberOfTransactions; i++) {
     const transactionDate = randomDate(startDate, endDate);
-    const amount = (Math.random() * 1000).toFixed(2); // Random amount between 0 and 1000 dollars
+    const min2 = 1;        // Minimum value (inclusive)
+    const max2 = 1000;     // Maximum value (inclusive)
+    const amount = Math.floor(Math.random() * (max2 - min2 + 1)) + min2;
     const newTransaction = new Transaction(
       mockTransactions.length + 1,
       customer.id,
@@ -131,12 +138,12 @@ app.get('/api/transactions/rewards', (req, res) => {
     );
   
     // Calculate the total amount
-    const totalAmount = filteredTransactions.reduce(
+    const rewards = filteredTransactions.reduce(
       (sum, transaction) => sum + calculateRewardPoints(transaction.amount),
       0
     );
   
-    res.json({ totalAmount });
+    res.json({ rewards });
   });
 
 // Start the server
